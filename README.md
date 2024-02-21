@@ -25,7 +25,10 @@ Requirements
 Coding the Game
 
     To code the game, you're going to have to stretch yourself 
-    especially if this is the first time you've coded anything to completion. The lecture on adding interactivity gives you all the necessary components, but now you have to problem solve in order to bring it all together.
+    especially if this is the first time you've coded anything 
+    to completion. The lecture on adding interactivity gives 
+    you all the necessary components, but now you have to 
+    problem solve in order to bring it all together.
 
     You'll need to use the 'document' object to access your 
     HTML elements. Use these hints to guide you:
