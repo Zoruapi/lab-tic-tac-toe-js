@@ -1,11 +1,11 @@
 #board {
     padding-top: 3em;
     text-align: center;
-    text-align: center;
 }
 
 h1 {
     text-align: center;
+    color: darkgoldenrod;
 }
 
 .row > div {
@@ -37,4 +37,10 @@ h1 {
 
 .right {
     border-left: 1px black solid;
+}
+
+/*Setting a backgorund picture for the page*/
+body {
+    background-image: image-set("media/vaporeon.jpg");
+    background-size: cover;
 }

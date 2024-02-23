@@ -1,13 +1,24 @@
 let cells = document.querySelectorAll('.row > div');
+
+/* Varables to help know the status of the game */
 var player1 = 0, player2 = 0, j = 0, winner = '0', clear = 0;
 var boardStatus = ['0', '0', '0', '0', '0', '0', '0', '0', '0'];
 var cellNumber = 0;
+
+/* Variables to play the sound effects */
+let pika = document.getElementById("pika");
+let char = document.getElementById("char");
+let draw = document.getElementById("draw");
+
 
 for(var i = 0; i < cells.length; i++) {
     cells[i].addEventListener('click', cellClicked);
 }
 
+/* Core of the game. Once a cell it's click it fills it with the corresponding
+    value. Checks for winner and clear the board */
 function cellClicked(){
+    console.log(event);
     if ( clear == 1) {
         clearBoard(boardStatus);
     } else {
@@ -19,23 +30,30 @@ function cellClicked(){
         if (winner != '0') {
             showWinner(winner);
             clear++;
-        } 
-    }
-    if(checkBoard(boardStatus)) {
-        showWinner(winner);
+        } else if(checkBoard(boardStatus)) {
+            showWinner(winner);
+        }
     }
 }
 
+/* Decides who's turn it is and fills an empty cell with the appropiate symbol */
 function fillCell(cellNumber, boardStatus){
     if (playerTurn(boardStatus)){
-        event.target.textContent = 'X';
+        var pikachu = document.createElement("img");
+        pikachu.src = "media/pikachu.webp";
+        pikachu.width = "83";
+        event.target.appendChild(pikachu);
         boardStatus[cellNumber] = 'X';
     } else {
-        event.target.textContent = 'O';
+        var charmander = document.createElement("img");
+        charmander.src = "media/charmander.webp";
+        charmander.width = "110";
+        event.target.appendChild(charmander);
         boardStatus[cellNumber] = 'O';
     }
 }
 
+/* Checks if the cell is empty */
 function emptyCell(empty){
     if (empty === '0') {
         return true;
@@ -44,6 +62,7 @@ function emptyCell(empty){
     }
 }
 
+/* Finds which cell was click and return its position on the local array */
 function findCell(cell) {
     switch (cell) {
         case "top left":
@@ -67,6 +86,7 @@ function findCell(cell) {
     }
 }
 
+/* Finds who's turn it is to play once a cell it's clicked */
 function playerTurn(board) {
     player1 = 0;
     player2 = 0;
@@ -86,6 +106,7 @@ function playerTurn(board) {
     }
 }
 
+/* Check if there is a winner on the board */
 function checkWinner(board) {
     if ( (board[0] === 'X') || (board[0] === 'O') ) {
         if ( (board[0] === board[1]) && (board[0] === board[2]) ) {
@@ -121,6 +142,7 @@ function checkWinner(board) {
     return '0';
 }
 
+/* Checks if the board is full or if it's possible to keep playing */
 function checkBoard(board){
     for ( j = 0; j < board.length; j++) {
         if (board[j] === '0') {
@@ -131,26 +153,44 @@ function checkBoard(board){
     return true;
 }
 
+/* Clears the board and prepares it for the next game */
 function clearBoard(board) {
     for ( j = 0; j < board.length; j++) {
         board[j] = '0';
         cells[j].textContent = '';
     }
+    removeElement(document.getElementById("end"));
     clear = 0;
 }
 
+/* Shows the winner or if its a draw. Playing the corresponding sound effects */
 function showWinner(winner){
-    const end = document.createElement("h3");
+    const end = document.createElement("h1");
 
-    if (winner != '0') {
-        end.textContent = winner+" WINS!!!!";
+    if (winner === 'X') {
+        pika.volume = 0.25;
+        pika.play();
+        end.textContent = "PIKACHU WINS!!!!";
+    } else if (winner === 'O') {
+        char.volume = 0.5;
+        char.play();
+        end.textContent = "CHARMANDER WINS!!!!";
     } else {
-        end.textContent = "DRAW";
+        draw.volume = 0.10;
+        draw.play();
+        end.textContent = "IT'S A DRAW :(";
     }
     end.style.textAlign = "center";
+    end.id = "end";
+    end.style.color = "darkgoldenrod"
 
     const parent = document.getElementById("board");
     parent.appendChild(end);
     const currentDiv = document.getElementById("cell");
     parent.insertBefore(end, currentDiv);
+}
+
+/* Removes a given html element */
+function removeElement(ele) {
+    ele.parentNode.removeChild(ele);
 }
