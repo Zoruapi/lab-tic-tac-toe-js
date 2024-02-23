@@ -1,5 +1,5 @@
 let cells = document.querySelectorAll('.row > div');
-var player1 = 0, player2 = 0, j = 0, winner = 0, clear = 0;
+var player1 = 0, player2 = 0, j = 0, winner = '0', clear = 0;
 var boardStatus = ['0', '0', '0', '0', '0', '0', '0', '0', '0'];
 var cellNumber = 0;
 
@@ -8,8 +8,6 @@ for(var i = 0; i < cells.length; i++) {
 }
 
 function cellClicked(){
-    console.log(boardStatus)
-    checkBoard(boardStatus);
     if ( clear == 1) {
         clearBoard(boardStatus);
     } else {
@@ -19,9 +17,12 @@ function cellClicked(){
         }
         winner = checkWinner(boardStatus);
         if (winner != '0') {
+            showWinner(winner);
             clear++;
-            console.log(winner + ' WINS!!!!');
         } 
+    }
+    if(checkBoard(boardStatus)) {
+        showWinner(winner);
     }
 }
 
@@ -123,10 +124,11 @@ function checkWinner(board) {
 function checkBoard(board){
     for ( j = 0; j < board.length; j++) {
         if (board[j] === '0') {
-            return;
+            return false;
         }
     }
     clear++;
+    return true;
 }
 
 function clearBoard(board) {
@@ -135,4 +137,20 @@ function clearBoard(board) {
         cells[j].textContent = '';
     }
     clear = 0;
+}
+
+function showWinner(winner){
+    const end = document.createElement("h3");
+
+    if (winner != '0') {
+        end.textContent = winner+" WINS!!!!";
+    } else {
+        end.textContent = "DRAW";
+    }
+    end.style.textAlign = "center";
+
+    const parent = document.getElementById("board");
+    parent.appendChild(end);
+    const currentDiv = document.getElementById("cell");
+    parent.insertBefore(end, currentDiv);
 }
